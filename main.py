@@ -1,5 +1,8 @@
+from sitka_highs import high_temperatures, read_csv
+
+
 def main():
-    print("Hello from pcc-datasets!")
+    high_temperatures()
 
 
 if __name__ == "__main__":
