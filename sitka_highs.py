@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -18,6 +19,13 @@ def read_csv():
     return reader
 
 
+def extract_dates():
+    """Extracts the date of each high temperature in the list returned by read_csv"""
+    reader = read_csv()
+    dates = [datetime.strptime(row[2], "%Y-%m-%d") for row in reader]
+    return dates
+
+
 def high_temperatures():
     """Extracts the high temperatures from the list returned by read_csv"""
     reader = read_csv()
@@ -28,13 +36,15 @@ def high_temperatures():
 def plot_high_temperatures():
     """Plot the high temperatures"""
     highs = high_temperatures()
+    dates = extract_dates()
     plt.style.use("seaborn-v0_8-darkgrid")
     fig, ax = plt.subplots()
-    ax.plot(highs, color="red")
+    ax.plot(dates, highs, color="red")
 
     # plot formatting
     ax.set_title("Daily High Temperatures, July 2021", fontsize=16)
     ax.set_xlabel("", fontsize=16)
+    fig.autofmt_xdate()
     ax.set_ylabel("Temperature (F)", fontsize=16)
     ax.tick_params(labelsize=14)
 
