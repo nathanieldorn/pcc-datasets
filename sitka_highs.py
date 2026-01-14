@@ -7,14 +7,14 @@ import matplotlib.pyplot as plt
 
 def read_csv():
     """Reads the csv and creates a list of the row data and headers"""
-    path = Path("weather_data/sitka_weather_07-2021_simple.csv")
+    # Uncomment depending on which file is to be read
+    # path = Path("weather_data/sitka_weather_07-2021_simple.csv")
+    path = Path("weather_data/sitka_weather_2021_simple.csv")
     lines = path.read_text(encoding="utf-8").splitlines()
 
     reader = csv.reader(lines)
+    # Uncomment if headers are neeeded
     headers = next(reader)
-
-    """for i, header in enumerate(headers):
-       print(i, header)"""
 
     return reader
 
@@ -42,12 +42,12 @@ def plot_high_temperatures():
     ax.plot(dates, highs, color="red")
 
     # plot formatting
-    ax.set_title("Daily High Temperatures, July 2021", fontsize=16)
+    ax.set_title("Daily High Temperatures, 2021", fontsize=20)
     ax.set_xlabel("", fontsize=16)
     fig.autofmt_xdate()
     ax.set_ylabel("Temperature (F)", fontsize=16)
     ax.tick_params(labelsize=14)
 
     # show and save plot
-    plt.savefig("daily_high_temps_07-2021.png", dpi="figure", bbox_inches="tight")
+    plt.savefig("daily_high_temps_2021.png", dpi="figure", bbox_inches="tight")
     plt.show()
