@@ -33,21 +33,31 @@ def high_temperatures():
     return highs
 
 
-def plot_high_temperatures():
-    """Plot the high temperatures"""
+def low_temperatures():
+    """Extracts the low temperatures from the list returned by read_csv"""
+    reader = read_csv()
+    lows = [int(row[5]) for row in reader if row[5] != ""]
+    return lows
+
+
+def plot_temperatures():
+    """Plot the temperatures, high and low, by date"""
     highs = high_temperatures()
     dates = extract_dates()
+    lows = low_temperatures()
     plt.style.use("seaborn-v0_8-darkgrid")
     fig, ax = plt.subplots()
-    ax.plot(dates, highs, color="red")
+    ax.plot(dates, highs, color="red", alpha=0.5)
+    ax.plot(dates, lows, color="blue", alpha=0.5)
+    ax.fill_between(dates, highs, lows, facecolor="blue", alpha=0.2)
 
     # plot formatting
-    ax.set_title("Daily High Temperatures, 2021", fontsize=20)
+    ax.set_title("Daily High and Low Temperatures, 2021", fontsize=20)
     ax.set_xlabel("", fontsize=16)
     fig.autofmt_xdate()
     ax.set_ylabel("Temperature (F)", fontsize=16)
     ax.tick_params(labelsize=14)
 
     # show and save plot
-    plt.savefig("daily_high_temps_2021.png", dpi="figure", bbox_inches="tight")
+    plt.savefig("daily_high_low_temps_2021.png", dpi="figure", bbox_inches="tight")
     plt.show()
