@@ -1,19 +1,31 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 import plotly.express as px
 
 
 def read_json():
-    """Read data from json files within eq_data directory"""
-    path = Path("eq_data/eq_data_1_day_m1.geojson")
+    """Read earthquake feature data from json files and json metadata"""
+    # add/remove comment below for 1 day's data
+    # path = Path("eq_data/eq_data_1_day_m1.geojson")
+    # add/remove comment below for 30 day data
+    path = Path("eq_data/eq_data_30_day_m1.geojson")
     contents = path.read_text(encoding="utf-8")
     eq_data = json.loads(contents)
-    # return eq_data
 
     # examine earthquakes in the dataset
     eq_dicts = eq_data["features"]
     return eq_dicts
+
+
+def get_metadata():
+    """Reads the json metadata, used by earthquake_world_map() to get json title and timestamp"""
+    path = Path("eq_data/eq_data_30_day_m1.geojson")
+    contents = path.read_text(encoding="utf-8")
+    eq_data = json.loads(contents)
+    json_metadata = eq_data["metadata"]
+    return json_metadata
 
 
 def readable_json():
@@ -38,8 +50,35 @@ def get_location_data():
     return longitudes, latitudes
 
 
+def get_titles():
+    """Creates a list of the earthquake title data for each occurrence to be displayed in hover text"""
+    eq_dicts = read_json()
+    eq_titles = [earthquake["properties"]["title"] for earthquake in eq_dicts]
+    return eq_titles
+
+
 def earthquake_world_map():
+    """Creates a world map of the earthquakes from the file read in read_json()"""
     longitudes, latitudes = get_location_data()
-    title = "Global Earthquakes"
-    fig = px.scatter_geo(lat=latitudes, lon=longitudes, title=title)
+    magnitudes = get_magnitudes()
+    eq_titles = get_titles()
+    json_metadata = get_metadata()
+
+    # timestamp 13 digits with ms, reduce to 10
+    json_timestamp = json_metadata["generated"] / 1000
+    json_datetime = f"{datetime.fromtimestamp(json_timestamp)}"
+
+    map_title = json_metadata["title"] + " - " + json_datetime
+    fig = px.scatter_geo(
+        lat=latitudes,
+        lon=longitudes,
+        size=magnitudes,
+        title=map_title,
+        color=magnitudes,
+        color_continuous_scale="Viridis",
+        labels={"color": "Magnitude", "lat": "Latitude", "lon": "Longitude"},
+        projection="natural earth",
+        hover_name=eq_titles,
+    )
+
     fig.show()
