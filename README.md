@@ -11,6 +11,6 @@ Displays the daily high an dlow temperatures with fill between each plot. Output
 ![Daily High and Low Death Valley 2021](https://github.com/nathanieldorn/pcc-datasets/blob/main/daily_high_low_temps_death_valley_2021.png)
 
 ## Earthquake World Map
-Displays a world map of earthquakes over a 30 day period. The data is sourced from the '.geojson' files in the `eq_data' directory. The map has been customized to display the file's timestamp and features hover text data for each earthquake, including approximate location description, coordinates, and magnitude. Magnitude is denoted by the size of each occurence as well as its color, following the legend on the right.
+Displays a world map of earthquakes over a 30 day period. The data is sourced from the `.geojson` files in the `eq_data` directory. The map has been customized to display the file's timestamp and features hover text data for each earthquake, including approximate location description, coordinates, and magnitude. Magnitude is denoted by the size of each occurence as well as its color, following the legend on the right.
 
 ![Earthquake World Map - Last 30 Days](https://github.com/nathanieldorn/pcc-datasets/blob/main/earthquake_world_map.png)
